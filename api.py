@@ -41,3 +41,12 @@ def create_task(task: TaskInput):
 def delete_task(task_id: int):
     data.remove_task_by_id(task_id) # Gọi hàm mới bên data 
     return {"message": "Đã xóa"}
+
+if __name__ == "__main__":
+    import uvicorn
+    import os
+    # Lấy port từ biến môi trường của server, nếu không có thì dùng 8000
+    port = int(os.environ.get("PORT", 8000))
+    # host="0.0.0.0" là bắt buộc để chạy trên server cloud
+    uvicorn.run("api:app", host="0.0.0.0", port=port, reload=True)
+    
