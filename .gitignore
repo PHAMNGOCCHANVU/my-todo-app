@@ -1,0 +1,9 @@
+# Bỏ qua các file biên dịch của Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Bỏ qua cấu hình cá nhân của VS Code
+.vscode/
+*.db
+*.sqlite3
