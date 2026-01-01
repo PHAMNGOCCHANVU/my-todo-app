@@ -12,7 +12,7 @@ app = FastAPI()
 # Cho phép tất cả các trang web khác gọi vào API này
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:5500", "http://localhost:5500"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -49,4 +49,4 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     # host="0.0.0.0" là bắt buộc để chạy trên server cloud
     uvicorn.run("api:app", host="0.0.0.0", port=port, reload=True)
-    
+
