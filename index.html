@@ -94,7 +94,7 @@
             async function deleteTask(id) {
                 if (!confirm("Bạn chắc chắn muốn xóa?")) return;
 
-                await fetch(`${API_URL}/${id}`, {
+                await fetch(`${API_URL + "/tasks"}/${id}`, {
                     method: "DELETE"
                 });
                 fetchTasks(); // Tải lại danh sách
