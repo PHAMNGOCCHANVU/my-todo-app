@@ -55,7 +55,7 @@
 
             // 1. Hàm lấy danh sách từ API
             async function fetchTasks() {
-                const response = await fetch(API_URL); // Gọi điện lên server
+                const response = await fetch(API_URL + "/tasks"); // Gọi điện lên server
                 const tasks = await response.json(); // Chờ server trả lời và đọc JSON
                 const listElement = document.getElementById("taskList");
                 listElement.innerHTML = ""; // Xóa danh sách cũ
