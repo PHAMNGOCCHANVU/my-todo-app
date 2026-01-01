@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <title>My Todo List</title>
+        <style>
+            body {
+                font-family: sans-serif; 
+                max-width: 500px; 
+                margin: 2rem auto;
+            }
+            ul {
+                list-style-type: none; padding: 0;
+            }
+            li {
+                background: #f4f4f4;
+                margin: 5px 0;
+                padding: 10px;
+                display: flex;
+                justify-content: space-between;
+            }
+            button {
+                cursor: pointer;
+                background: #ff4444;
+                color: white;
+                border: none;
+                padding: 5px 10px;
+            }
+            .input-group {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+            input {
+                flex-grow: 1;
+                padding: 8px;
+            }
+            .add-btn {background: #28a745;}
+        </style>
+    </head>
+    <body>
+
+        <h1>Danh sách công việc</h1>
+
+        <div class="input-group">
+            <input type="text" id="taskInput" placeholder="Nhập việc cần làm...">
+            <button class="add-btn" onclick="addTask()">Thêm</button>
+            <button onclick="fetchTasks()">Tải danh sách</button>
+        </div>
+        
+        <ul id="taskList"></ul>
+        
+        <script>
+            const API_URL = "http://127.0.0.1:8000/tasks";
+
+            // 1. Hàm lấy danh sách từ API
+            async function fetchTasks() {
+                const response = await fetch(API_URL); // Gọi điện lên server
+                const tasks = await response.json(); // Chờ server trả lời và đọc JSON
+                const listElement = document.getElementById("taskList");
+                listElement.innerHTML = ""; // Xóa danh sách cũ
+                
+                // Duyệt qua từng công việc và vẽ lên màn hình
+                tasks.forEach((task) => {
+                    const li = document.createElement("li");
+
+                    // Hiển thị tên và nút xóa
+                    li.innerHTML = `
+                        <span>${task.title}</span>
+                        <button onclick="deleteTask(${task.id})">Xóa</button>
+                    `;
+                    listElement.appendChild(li);
+                });
+            }
+            
+            // 2. Hàm thêm công việc mới
+            async function addTask() {
+                const input = document.getElementById("taskInput");
+                const title = input.value.trim();
+
+                if (!title) return alert("Vui lòng nhập nội dung!");
+
+                await fetch(API_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json"},
+                    body: JSON.stringify({title: title}) // Đóng gói dữ liệu gửi đi 
+                });
+
+                input.value = ""; // Xóa ô nhập
+                fetchTasks(); // Tải lại danh sách
+            }
+
+            // 3. Hàm xóa công việc
+            async function deleteTask(id) {
+                if (!confirm("Bạn chắc chắn muốn xóa?")) return;
+
+                await fetch(`${API_URL}/${id}`, {
+                    method: "DELETE"
+                });
+                fetchTasks(); // Tải lại danh sách
+            }
+            
+            // Khi mở trang web lên thì gọi hàm lấy danh sách ngay
+            fetchTasks();
+        </script>    
+    </body>
+</html>
