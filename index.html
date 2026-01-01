@@ -80,7 +80,7 @@
 
                 if (!title) return alert("Vui lòng nhập nội dung!");
 
-                await fetch(API_URL, {
+                await fetch(API_URL + "/tasks", {
                     method: "POST",
                     headers: { "Content-Type": "application/json"},
                     body: JSON.stringify({title: title}) // Đóng gói dữ liệu gửi đi 
